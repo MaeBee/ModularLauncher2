@@ -14,9 +14,9 @@ namespace ModularLauncher2
         {
         }
 
-        private Types.AvailablePlugins colAvailablePlugins = new Types.AvailablePlugins();
+        private PluginList colAvailablePlugins = new PluginList();
 
-        public Types.AvailablePlugins AvailablePlugins
+        public PluginList AvailablePlugins
         {
             get { return colAvailablePlugins; }
             set { colAvailablePlugins = value; }
@@ -30,19 +30,22 @@ namespace ModularLauncher2
         public void FindPlugins(string Path)
         {
             colAvailablePlugins.Clear();
-            foreach (string fileOn in Directory.GetFiles(Path))
+            if (Directory.Exists(Path))
             {
-                FileInfo file = new FileInfo(fileOn);
-                if (file.Extension.Equals(".dll"))
+                foreach (string fileOn in Directory.GetFiles(Path))
                 {
-                    this.AddPlugin(fileOn);
+                    FileInfo file = new FileInfo(fileOn);
+                    if (file.Extension.Equals(".dll"))
+                    {
+                        this.AddPlugin(fileOn);
+                    }
                 }
             }
         }
 
         public void ClosePlugins()
         {
-            foreach (Types.AvailablePlugin pluginOn in colAvailablePlugins)
+            foreach (AvailablePlugin pluginOn in colAvailablePlugins)
             {
                 pluginOn.Instance.Dispose();
                 pluginOn.Instance = null;
@@ -62,7 +65,7 @@ namespace ModularLauncher2
                         Type typeInterface = pluginType.GetInterface("ModularLauncherUtil.IPlugin", true);
                         if (typeInterface != null)
                         {
-                            Types.AvailablePlugin newPlugin = new Types.AvailablePlugin();
+                            AvailablePlugin newPlugin = new AvailablePlugin();
                             newPlugin.AssemblyPath = FileName;
                             newPlugin.Instance = (IPlugin)Activator.CreateInstance(pluginAssembly.GetType(pluginType.ToString()));
                             newPlugin.Instance.Host = this;
@@ -77,48 +80,48 @@ namespace ModularLauncher2
             pluginAssembly = null;
         }
     }
-    namespace Types
+
+    public class PluginList : System.Collections.CollectionBase
     {
-        public class AvailablePlugins : System.Collections.CollectionBase
+        // List of Plugins
+        public void Add(AvailablePlugin pluginToAdd)
         {
-            public void Add(Types.AvailablePlugin pluginToAdd)
-            {
-                this.List.Add(pluginToAdd);
-            }
-            public void Remove(Types.AvailablePlugin pluginToRemove)
-            {
-                this.List.Remove(pluginToRemove);
-            }
-            public Types.AvailablePlugin Find(string pluginNameOrPath)
-            {
-                Types.AvailablePlugin toReturn = null;
-                foreach (Types.AvailablePlugin pluginOn in this.List)
-                {
-                    if ((pluginOn.Instance.Name.Equals(pluginNameOrPath)) || pluginOn.AssemblyPath.Equals(pluginNameOrPath))
-                    {
-                        toReturn = pluginOn;
-                        break;
-                    }
-                }
-                return toReturn;
-            }
+            this.List.Add(pluginToAdd);
         }
-
-        public class AvailablePlugin
+        public void Remove(AvailablePlugin pluginToRemove)
         {
-            private IPlugin myInstance = null;
-            private string myAssemblyPath = "";
+            this.List.Remove(pluginToRemove);
+        }
+        public AvailablePlugin Find(string pluginNameOrPath)
+        {
+            AvailablePlugin toReturn = null;
+            foreach (AvailablePlugin pluginOn in this.List)
+            {
+                if ((pluginOn.Instance.Name.Equals(pluginNameOrPath)) || pluginOn.AssemblyPath.Equals(pluginNameOrPath))
+                {
+                    toReturn = pluginOn;
+                    break;
+                }
+            }
+            return toReturn;
+        }
+    }
 
-            public IPlugin Instance
-            {
-                get { return myInstance; }
-                set { myInstance = value; }
-            }
-            public string AssemblyPath
-            {
-                get { return myAssemblyPath; }
-                set { myAssemblyPath = value; }
-            }
+    public class AvailablePlugin
+    {
+        // Wrapper for plugin instances
+        private IPlugin myInstance = null;
+        private string myAssemblyPath = "";
+
+        public IPlugin Instance
+        {
+            get { return myInstance; }
+            set { myInstance = value; }
+        }
+        public string AssemblyPath
+        {
+            get { return myAssemblyPath; }
+            set { myAssemblyPath = value; }
         }
     }
 }

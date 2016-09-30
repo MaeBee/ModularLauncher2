@@ -59,6 +59,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
+    <Compile Include="NoPluginWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NoPluginWarning.designer.cs">
+      <DependentUpon>NoPluginWarning.cs</DependentUpon>
+    </Compile>
     <Compile Include="PluginServices.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +82,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoPluginWarning.resx">
+      <DependentUpon>NoPluginWarning.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

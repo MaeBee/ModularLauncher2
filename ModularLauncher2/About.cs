@@ -15,6 +15,7 @@ namespace ModularLauncher2
     {
         ArrayList arPlugins;
         string AssemblyProduct, AssemblyVersion, AssemblyCopyright, AssemblyCompany, AssemblyDescription;
+
         public AboutForm()
         {
             InitializeComponent();
@@ -26,7 +27,7 @@ namespace ModularLauncher2
             lblCompany.Text = AssemblyCompany;
             txtDescription.Text = AssemblyDescription;
             lstPlugins.Items.Add(AssemblyProduct);
-            foreach (Types.AvailablePlugin pluginOn in Global.Plugins.AvailablePlugins)
+            foreach (AvailablePlugin pluginOn in Global.Plugins.AvailablePlugins)
             {
                 arPlugins.Add(pluginOn);
                 lstPlugins.Items.Add("Plugin: " + pluginOn.Instance.Name);
@@ -73,7 +74,7 @@ namespace ModularLauncher2
             }
             else
             {
-                Types.AvailablePlugin plugin = (Types.AvailablePlugin)arPlugins[lstPlugins.SelectedIndex - 1];
+                AvailablePlugin plugin = (AvailablePlugin)arPlugins[lstPlugins.SelectedIndex - 1];
                 if (plugin.Instance.Name == "")
                 {
                     lblTitle.Text = "Nameless or corrupted plugin";

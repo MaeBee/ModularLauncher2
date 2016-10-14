@@ -13,6 +13,8 @@ namespace ModularLauncher2
 {
     public partial class Form1 : Form
     {
+        public Dictionary<string, Dictionary<string, string>> Config = new Dictionary<string, Dictionary<string, string>>();
+
         public Form1()
         {
             InitializeComponent();
@@ -60,9 +62,11 @@ namespace ModularLauncher2
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string SourceFile = Application.StartupPath + "\\test\\zipper.zip";
+            Settings SettingsWindow = new Settings(Config);
+            SettingsWindow.ShowDialog(this);
+            //string SourceFile = Application.StartupPath + "\\test\\zipper.zip";
             //MessageBox.Show(SourceFile.Substring(0, SourceFile.LastIndexOf("\\")));
-            Zipper.Unzip(SourceFile);
+            //Zipper.Unzip(SourceFile);
         }
     }
 }

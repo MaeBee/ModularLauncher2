@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace ModularLauncherUtil
 {
@@ -21,6 +22,7 @@ namespace ModularLauncherUtil
 
         void Initialize();
         void Dispose();
+        bool PopulateSettings(Dictionary<string, string> PluginConfig);
     }
 
     public interface IPluginHost
